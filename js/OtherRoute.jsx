@@ -3,7 +3,6 @@ const MyTitle = require('./MyTitle')
 const axios = require('axios')
 
 class OtherRoute extends React.Component {
-
   constructor (props) {
     super(props)
     this.update = this.update.bind(this)
@@ -14,7 +13,7 @@ class OtherRoute extends React.Component {
   }
 
   componentDidMount () {
-    axios.get('http://localhost:5050/OtherRoute')
+    axios.get('http://localhost:6060/OtherRoute')
     .then((res) => (
       console.log('this is the console log', res)
       )
