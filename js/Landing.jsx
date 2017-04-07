@@ -8,6 +8,10 @@ class MyFirstComponent extends React.Component {
       <div>
         <MyTitle title='Aloha this is kainoa' />
         <Link to='/OtherRoute'>click to english</Link>
+        <br />
+        <Link to='/AddEvent'> Add a Event </Link>
+        <br />
+        <Link to='/AddResource'> Add a Resource </Link>
       </div>
     )
   }
