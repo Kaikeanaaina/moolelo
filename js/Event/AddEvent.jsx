@@ -4,26 +4,20 @@ class AddEvent extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      title: '',
-      description: '',
-      date: '',
-      Source: '',
+      Event: {},
       sources: '',
       hashTags: '',
       years: [],
-      datesOfTheMonth: []
+      datesOfTheMonth: [],
+      showSubmitButton: false
     }
-    this.handleTitleChange = this.handleTitleChange.bind(this)
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
+    this.handleHashTag = this.handleHashTag.bind(this)
+    this.showSubmitButton = this.showSubmitButton.bind(this)
+    this.consoleThis = this.consoleThis.bind(this)
   }
-  handleTitleChange () {
+  handleHashTag () {
     this.setState({
-      title: this.refs.title.value
-    })
-  }
-  handleDescriptionChange () {
-    this.setState({
-      description: this.refs.description.value
+      hashTags: this.refs.hashTags.value
     })
   }
   componentDidMount () {
@@ -45,20 +39,41 @@ class AddEvent extends React.Component {
       datesOfTheMonth: dateArray
     })
   }
+  showSubmitButton (e) {
+    if (this.refs.title.value && this.refs.description.value && this.refs.startingMonth.value && this.refs.startingDay.value && this.refs.startingYear.value && this.refs.endingMonth.value && this.refs.endingDay.value && this.refs.endingYear.value) {
+      this.setState({
+        showSubmitButton: true
+      })
+    } else {
+      this.setState({
+        showSubmitButton: false
+      })
+    }
+  }
+  onSubmit () {
+    console.log('submit the event')
+  }
+  consoleThis () {
+    console.log('fa;skdlfja;lksdjf;alskdfj')
+  }
   render () {
+    let submitButton = null
+    if (this.state.showSubmitButton) {
+      submitButton = <button onClick={this.consoleThis} >Submit Event</button>
+    }
     return (
       <div>
         <h1>this is the add event page</h1>
         <form onSubmit={this.onSubmit}>
-          <input type='text' ref='title' placeholder='title' onChange={this.handleTitleChange} />
+          <input type='text' ref='title' placeholder='title' onChange={this.showSubmitButton} />
           <br />
-          <textArea type='text' ref='description' placeholder='description' onChange={this.handleDescriptionChange} />
+          <textArea type='text' ref='description' placeholder='description' onChange={this.showSubmitButton} />
           <br />
 
           <div>
             <label> Starting Date:
-              <select>
-                <option value={0} > Month</option>
+              <select ref='startingMonth' onChange={this.showSubmitButton}>
+                <option value='' > Month</option>
                 <option value={1} >Jan</option>
                 <option value={2} >Feb</option>
                 <option value={3} >Mar</option>
@@ -72,14 +87,14 @@ class AddEvent extends React.Component {
                 <option value={11} >Nov</option>
                 <option value={12} >Dec</option>
               </select>
-              <select>
-                <option value={0} >Day</option>
+              <select ref='startingDay' onChange={this.showSubmitButton} >
+                <option value='' >Day</option>
                 {this.state.datesOfTheMonth.map((date, i) => (
                   <option value={date} key={i}> {date} </option>
                 ))}
               </select>
-              <select>
-                <option value={0}> Year </option>
+              <select ref='startingYear' onChange={this.showSubmitButton} >
+                <option value='' > Year </option>
                 {this.state.years.map((year, i) => (
                   <option value={year} key={i}> {year}</option>
                 ))}
@@ -89,8 +104,8 @@ class AddEvent extends React.Component {
           <br />
           <div>
             <label> Ending Date:
-              <select>
-                <option value={0} > Month</option>
+              <select ref='endingMonth' onChange={this.showSubmitButton} >
+                <option value='' > Month</option>
                 <option value={1} >Jan</option>
                 <option value={2} >Feb</option>
                 <option value={3} >Mar</option>
@@ -104,14 +119,14 @@ class AddEvent extends React.Component {
                 <option value={11} >Nov</option>
                 <option value={12} >Dec</option>
               </select>
-              <select>
-                <option value={0} >Day</option>
+              <select ref='endingDay' onChange={this.showSubmitButton} >
+                <option value='' >Day</option>
                 {this.state.datesOfTheMonth.map((date, i) => (
                   <option value={date} key={i}> {date} </option>
                 ))}
               </select>
-              <select>
-                <option value={0}> Year </option>
+              <select ref='endingYear' onChange={this.showSubmitButton} >
+                <option value='' > Year </option>
                 {this.state.years.map((year, i) => (
                   <option value={year} key={i}> {year}</option>
                 ))}
@@ -119,7 +134,9 @@ class AddEvent extends React.Component {
             </label>
           </div>
 
-          <input type='text' ref='hashtags' placeholder='hashtags' />
+          <input type='text' ref='hashTags' placeholder='hashTags' onChange={this.handleHashTag} />
+
+          <br />
 
           <select>
             <option value={0}> Source </option>
@@ -130,6 +147,7 @@ class AddEvent extends React.Component {
           </div>
 
         </form>
+        {submitButton}
       </div>
     )
   }
