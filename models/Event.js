@@ -8,9 +8,13 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(5000),
       allowNull: false
     },
-    date: {
+    startingDate: {
       type: DataTypes.DATE(),
       allowNull: false
+    },
+    endingDate: {
+      type: DataTypes.DATE(),
+      allowNull: true
     }
   }, {
     classMethods: {
@@ -23,3 +27,4 @@ module.exports = function (sequelize, DataTypes) {
 
   return Event
 }
+
