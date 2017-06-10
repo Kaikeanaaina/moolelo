@@ -1,4 +1,7 @@
 const React = require('react')
+const axios = require('axios')
+const { domain } = require('../Domain')
+// const PreviewModal = require('../Modal/PreviewModal')
 
 class AddEvent extends React.Component {
   constructor (props) {
@@ -9,16 +12,28 @@ class AddEvent extends React.Component {
       hashTags: '',
       years: [],
       datesOfTheMonth: [],
-      showSubmitButton: false
+      showSubmitButton: false,
+      modalIsOpen: false,
+      object: {}
     }
     this.handleHashTag = this.handleHashTag.bind(this)
     this.showSubmitButton = this.showSubmitButton.bind(this)
-    this.consoleThis = this.consoleThis.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
   handleHashTag () {
     this.setState({
       hashTags: this.refs.hashTags.value
     })
+  }
+  closeModal () {
+    this.setState({
+      modalIsOpen: false
+    })
+  }
+  openModal () {
+
   }
   componentDidMount () {
     let year = new Date().getFullYear()
@@ -40,7 +55,7 @@ class AddEvent extends React.Component {
     })
   }
   showSubmitButton (e) {
-    if (this.refs.title.value && this.refs.description.value && this.refs.startingMonth.value && this.refs.startingDay.value && this.refs.startingYear.value && this.refs.endingMonth.value && this.refs.endingDay.value && this.refs.endingYear.value) {
+    if (this.refs.title.value && this.refs.description.value && this.refs.startingMonth.value && this.refs.startingDay.value && this.refs.startingYear.value) {
       this.setState({
         showSubmitButton: true
       })
@@ -51,15 +66,37 @@ class AddEvent extends React.Component {
     }
   }
   onSubmit () {
-    console.log('submit the event')
-  }
-  consoleThis () {
-    console.log('fa;skdlfja;lksdjf;alskdfj')
+    let object = {
+      title: this.refs.title.value,
+      description: this.refs.description.value,
+      startingMonth: this.refs.startingMonth.value,
+      startingDay: this.refs.startingDay.value,
+      startingYear: this.refs.startingYear.value,
+      endingMonth: this.refs.endingMonth.value,
+      endingDay: this.refs.endingDay.value,
+      endingYear: this.refs.endingYear.value,
+      hashTags: this.refs.hashTags.value
+    }
+    this.setState({
+      object: object,
+      modalIsOpen: true
+    })
+
+    axios.post(`${domain}/events`, this.state.object)
+    .then((res) => {
+      this.setState({
+        modalIsOpen: true
+      })
+    })
+    .catch((error) => {
+      console.log('axios error', error)
+    })
+    window.location.href = '/#/'
   }
   render () {
     let submitButton = null
     if (this.state.showSubmitButton) {
-      submitButton = <button onClick={this.consoleThis} >Submit Event</button>
+      submitButton = <button onClick={this.openModal} >Submit Event</button>
     }
     return (
       <div>
@@ -154,3 +191,5 @@ class AddEvent extends React.Component {
 }
 
 module.exports = AddEvent
+
+        // <PreviewModal type='addEvent' modalIsOpen={this.state.modalIsOpen} closeModal={this.closeModal} object={this.state.object} onSubmit={this.onSubmit} contentLabel='previewModal' />
