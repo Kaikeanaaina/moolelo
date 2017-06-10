@@ -15,12 +15,15 @@ module.exports = function (sequelize, DataTypes) {
     endingDate: {
       type: DataTypes.DATE(),
       allowNull: true
+    },
+    hashTag: {
+      type: DataTypes.STRING(5000),
+      allowNull: true
     }
   }, {
     classMethods: {
       associate: function (models) {
-        Event.hasMany(models.Source)
-        Event.hasMany(models.Hashtag)
+        Event.belongsTo(models.Source)
       }
     }
   })

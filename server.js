@@ -29,6 +29,8 @@ app.all('/*', function (req, res, next) {
   next()
 })
 
+app.use('/events', require('./routes/event.js'))
+
 app.use((req, res) => {
   match({ routes: Routes(), location: req.url }, (error, redirectLocation, renderProps) => {
     if (error) {
